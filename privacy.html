@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#4F5BD5">
+<meta name="description" content="How Shiftloop handles your data: your schedule and pay stay on your devices and in your own iCloud.">
+<title>Shiftloop Privacy Policy</title>
+<style>
+:root {
+  --brand: #4F5BD5; --brand2: #8B5CF6;
+  --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --muted: #6C6C70; --line: #E5E5EA;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #000000; --card: #1C1C1E; --text: #F2F2F7; --muted: #AEAEB2; --line: #38383A; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+header { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; }
+.wrap { width: min(760px, calc(100% - 32px)); margin: 0 auto; }
+header .wrap { padding: 40px 0 32px; }
+header a.home { color: #fff; opacity: .85; text-decoration: none; font-weight: 600; font-size: 15px; }
+h1 { margin: 8px 0 0; font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.15; }
+header p { margin: 8px 0 0; opacity: .9; }
+main.wrap { padding: 24px 0 56px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 8px 24px 20px; margin-top: 16px; }
+h2 { font-size: 1.2rem; margin: 24px 0 4px; }
+p, li { color: var(--text); }
+.muted { color: var(--muted); }
+ul { padding-left: 1.2em; }
+li { margin: 6px 0; }
+a { color: var(--brand); }
+@media (prefers-color-scheme: dark) { a { color: #9AA3FF; } }
+.button { display: inline-block; background: var(--brand); color: #fff; text-decoration: none;
+  padding: 12px 20px; border-radius: 12px; font-weight: 600; margin-top: 8px; }
+footer { color: var(--muted); font-size: 14px; margin-top: 32px; }
+footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<a class="home" href="./">Shiftloop</a>
+<h1>Privacy Policy</h1>
+<p>Last updated: 28 September 2026</p>
+</div></header>
+<main class="wrap"><div class="card">
+<p>Shiftloop is a shift calendar and pay tracker. It's built so that your schedule and pay stay yours: there's no account, no advertising, no analytics and no tracking, and the developer of Shiftloop never receives your data.</p>
+<h2 id="what-shiftloop-stores-and-where">What Shiftloop stores, and where</h2>
+<p>Everything you enter is stored on your iPhone: your shifts, shift types, jobs, pay rates and rules, holidays, notes and settings.</p>
+<ul><li><strong>iCloud sync:</strong> if you're signed in to iCloud, Shiftloop keeps a copy in your <strong>private</strong> iCloud database so your iPhone and iPad stay the same. Only you can read it; the developer can't. You can turn it off in the Settings app → your name → iCloud.</li><li><strong>Widgets</strong> on the same iPhone read a copy of your upcoming shifts.</li><li><strong>Apple Watch:</strong> if you have one paired, the iPhone sends it your upcoming shifts directly.</li><li><strong>Device backups:</strong> if you back up your iPhone to iCloud or a computer, Shiftloop's data is included, as it is for any app.</li><li><strong>Backup files:</strong> a backup you export from Shiftloop is a file that goes wherever you choose to save or send it.</li></ul>
+<h2 id="live-sharing-optional">Live sharing (optional)</h2>
+<p>Live sharing is off unless you turn it on. When you share your calendar, Shiftloop saves a copy of it in <strong>your own iCloud account</strong> using Apple's CloudKit, and only the people you invite can see it. The copy contains:</p>
+<ul><li>shift names, dates, times, colours and icons</li><li>the name you choose to show</li><li>which job each shift is for, if you have more than one job</li><li>shift notes, only if you turn on "Include shift notes"</li></ul>
+<p><strong>Pay is never shared.</strong> No rates, earnings or overtime leave your phone.</p>
+<p>The developer of Shiftloop can't read this copy. It's stored in your iCloud account under Apple's <a href="https://www.apple.com/legal/privacy/">privacy policy</a>. When you stop sharing, the copy is deleted and everyone you invited loses access. People you shared with can also remove your calendar from their app at any time.</p>
+<p>When someone shares their calendar with you, Shiftloop keeps a copy on your iPhone so you can see it offline. To keep shared calendars up to date, Apple sends your iPhone silent notifications through its push service. These contain no schedule information.</p>
+<h2 id="teams-and-shift-swaps-optional">Teams and shift swaps (optional)</h2>
+<p>Teams are off unless you create or join one. No account, email or iCloud is needed: Shiftloop signs you in anonymously with <strong>Google Firebase</strong>, and you join a team with its invite code. Team data is stored in Shiftloop's Firebase project (Cloud Firestore, in the United States). Only people in the same team can see:</p>
+<ul><li>the name you enter for teams, and your shift names, dates and times (from two months ago to a year ahead)</li><li>shifts you release: the shift, an optional note, who applied for it, and which admin decided</li></ul>
+<p>The person who creates a team is its admin; admins can make other members admins. Admins decide who takes a released shift, and can remove people from the team.</p>
+<p>If your team's admins plan the schedule in Shiftloop, the shifts they publish for you are added to your calendar on your iPhone, and your coworkers see them like your other shifts. Shifts they haven't published yet are visible only to admins. If you ask for time off or mark days you can't work, the dates and the reason you type are visible only to you and the team's admins. Admins can also set a weekly hours target for each person, which only admins and that person can read.</p>
+<p><strong>Pay and shift notes are never shared with a team.</strong> Security rules on the server make sure that only members can read a team, that nobody can change another person's shifts or apply in their name, and that only admins approve swaps or remove people.</p>
+<p>To send you notifications about swaps, Shiftloop stores your device's push token (Firebase Cloud Messaging) and uses it only for that. If you report someone's swap request, the report (who reported whom, and the reason you type) is stored so the developer can review it.</p>
+<p>You can delete everything at any time in Settings → Teams &amp; swaps → Delete my team data: you leave every team, teams you created are deleted for everyone, and your anonymous sign-in and push tokens are removed. Leaving a team removes your shifts, your swap requests and your time off requests from it, and upcoming shifts the team scheduled are removed from your calendar (past ones stay, so your pay history doesn't change). Firebase processes this data under <a href="https://firebase.google.com/support/privacy">Google's privacy terms</a>.</p>
+<h2 id="shiftloop-admin-website-team-admins-only">Shiftloop Admin website (team admins only)</h2>
+<p>Team admins can manage their teams at shifter-9ff7c6.web.app. It shows the same team data as the app: people, their shifts, and released shifts with who applied and who decided, plus the schedule admins plan, time off requests and hours per person. It doesn't show pay or personal shift notes.</p>
+<ul><li><strong>Signing in with a QR code:</strong> the website makes a one-time sign-in request that expires after 10 minutes. When you scan it with your iPhone and confirm, the website is signed in as you. Unused requests are deleted within a day.</li><li><strong>Google or email (optional):</strong> if you link a Google account or an email address and password, Firebase Authentication stores that email address (and, for Google, your Google account ID) so you can sign in without your phone. Passwords are handled by Firebase and never seen by Shiftloop. Deleting your team data in the app removes the sign-in too.</li></ul>
+<p>The website uses no cookies for tracking, no analytics and no ads.</p>
+<h2 id="web-link-optional">Web link (optional)</h2>
+<p>The web link is off unless you create one. It lets anyone with the link see your shifts in a web browser. When you create one, Shiftloop saves a copy of your schedule in the <strong>public database of Shiftloop's iCloud container</strong> (Apple's CloudKit), under a random name that is part of the link. The copy contains the same things as live sharing (shift names, dates, times and colours, the name you choose to show, which job each shift is for, and notes only if you turn on "Include shift notes"). <strong>Pay is never included.</strong></p>
+<p>Unlike live sharing, this copy isn't private to people you invite: anyone who has the link can open it, so only send it to people you trust. The copy can't be searched for or listed; it can only be opened with the link. Because it's stored in Shiftloop's container rather than your own iCloud account, the developer of Shiftloop could technically see it, but doesn't look at it or use it for anything. The web page doesn't use cookies, analytics or trackers, and asks search engines not to list it.</p>
+<p>Turning the link off deletes the copy and the link stops working. Making a new link deletes the old copy.</p>
+<h2 id="purchases">Purchases</h2>
+<p>Shiftloop Pro is bought through the App Store. Apple handles the payment, and the developer doesn't receive your name, email or payment details. Shiftloop only asks the App Store whether you have Pro.</p>
+<h2 id="siri-shortcuts-reminders-and-calendar-export">Siri, Shortcuts, reminders and calendar export</h2>
+<ul><li><strong>Siri and Shortcuts:</strong> when you use them, Shiftloop answers on your iPhone. Apple processes your voice requests under its own privacy policy.</li><li><strong>Shift reminders:</strong> these are scheduled on your iPhone and aren't sent anywhere.</li><li><strong>Calendar export:</strong> it creates a file that you choose where to send.</li><li><strong>Scanning a roster:</strong> photos, screenshots and PDFs you scan are read on your device, by Apple's on-device text recognition and, where available, Apple Intelligence running on the device. They aren't uploaded or kept. Only the shifts you choose to add are saved.</li><li><strong>Calendar app (optional):</strong> if you turn it on, Shiftloop adds a "Shiftloop" calendar with your shifts (names, times and notes, never pay) to your device's Calendar app, in the calendar account you use there. Shiftloop only changes events in that calendar. Turning it off lets you remove the calendar.</li></ul>
+<h2 id="deleting-your-data">Deleting your data</h2>
+<ul><li><strong>Everything on your iPhone:</strong> delete the app.</li><li><strong>Your synced copy in iCloud:</strong> in the Settings app → your name → iCloud → Manage Account Storage → Shiftloop, delete its data.</li><li><strong>Your live-sharing copy in iCloud:</strong> stop sharing in Settings → Live sharing.</li><li><strong>A calendar someone shared with you:</strong> remove it from its menu.</li></ul>
+<h2 id="children">Children</h2>
+<p>Shiftloop isn't directed at children and doesn't collect personal information from anyone.</p>
+<h2 id="changes">Changes</h2>
+<p>If this policy changes, the new version will be published here with a new date.</p>
+<h2 id="contact">Contact</h2>
+<p>Questions about privacy: <a href="mailto:whitecarrotstudios@gmail.com">whitecarrotstudios@gmail.com</a></p>
+</div>
+<footer><a href="./">Shiftloop support</a></footer>
+</main>
+</body>
+</html>
