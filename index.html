@@ -5,63 +5,404 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#4F5BD5">
-<meta name="description" content="Help and contact for Shiftloop, the shift calendar and pay tracker.">
-<title>Shiftloop Support</title>
+<meta name="apple-itunes-app" content="app-id=6818672597">
+<title>Shiftloop: shift calendar and pay tracker for iPhone</title>
+<meta name="description" content="Scan your roster, see every shift at a glance, and know what you'll earn, overtime and holiday pay included. For nurses, first responders and anyone on shifts.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shiftloop: the shift calendar that knows what you're owed">
+<meta property="og:description" content="Scan your roster, see every shift at a glance, and know what you'll earn. Free on the App Store.">
+<meta property="og:image" content="https://jaymehta1892-prog.github.io/shiftloop/assets/icon.png">
+<meta property="og:url" content="https://jaymehta1892-prog.github.io/shiftloop/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>
 :root {
   --brand: #4F5BD5; --brand2: #8B5CF6;
-  --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --muted: #6C6C70; --line: #E5E5EA;
+  --day: #F0A030; --night: #3F4FA8; --long: #C9586E; --clinic: #3E9B5A; --teal: #2E9B8A;
+  --bg: #F6F6FB; --card: #FFFFFF; --text: #16182A; --muted: #5E6178; --line: #E4E5F0;
+  --tint: #EEEFFC; --link: #4F5BD5; --bezel: #12131F;
+  --shadow: 0 18px 50px rgba(40, 44, 110, .18);
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #000000; --card: #1C1C1E; --text: #F2F2F7; --muted: #AEAEB2; --line: #38383A; }
+  :root {
+    --bg: #0C0D16; --card: #171927; --text: #F1F2FA; --muted: #A5A8C0; --line: #2A2D42;
+    --tint: #1D2040; --link: #A5ADFF; --bezel: #2A2D42;
+    --shadow: 0 18px 50px rgba(0, 0, 0, .5);
+  }
+  .kicker { color: color-mix(in srgb, var(--k, var(--brand)) 50%, white) !important; }
+  .tag { color: #C4B5FD !important; border-color: #C4B5FD !important; }
 }
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--text);
-  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-header { background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; }
-.wrap { width: min(760px, calc(100% - 32px)); margin: 0 auto; }
-header .wrap { padding: 40px 0 32px; }
-header a.home { color: #fff; opacity: .85; text-decoration: none; font-weight: 600; font-size: 15px; }
-h1 { margin: 8px 0 0; font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.15; }
-header p { margin: 8px 0 0; opacity: .9; }
-main.wrap { padding: 24px 0 56px; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 8px 24px 20px; margin-top: 16px; }
-h2 { font-size: 1.2rem; margin: 24px 0 4px; }
-p, li { color: var(--text); }
-.muted { color: var(--muted); }
-ul { padding-left: 1.2em; }
-li { margin: 6px 0; }
-a { color: var(--brand); }
-@media (prefers-color-scheme: dark) { a { color: #9AA3FF; } }
-.button { display: inline-block; background: var(--brand); color: #fff; text-decoration: none;
-  padding: 12px 20px; border-radius: 12px; font-weight: 600; margin-top: 8px; }
-footer { color: var(--muted); font-size: 14px; margin-top: 32px; }
+  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+img { max-width: 100%; display: block; }
+a { color: var(--link); }
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.wrap { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+section { scroll-margin-top: 72px; }
+
+/* Top bar */
+.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 20px; height: 60px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; color: var(--text); text-decoration: none; margin-right: auto; }
+.logo img { width: 34px; height: 34px; border-radius: 22.5%; }
+.top nav { display: flex; gap: 22px; }
+.top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
+.top nav a:hover { color: var(--text); }
+.pill { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; font-weight: 700;
+  font-size: 15px; padding: 8px 16px; border-radius: 999px; white-space: nowrap; }
+@media (max-width: 720px) { .top nav { display: none; } }
+
+/* Hero */
+.hero { background: radial-gradient(900px 500px at 85% 0%, rgba(255,255,255,.22), transparent 60%),
+  linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; padding: 64px 0 0; }
+.eyebrow { font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.hero h1 { font-size: clamp(2.3rem, 5.4vw, 3.7rem); font-weight: 800; margin-top: 14px; }
+.hero .lede { font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 18px; max-width: 34em; opacity: .95; }
+.cta { display: inline-flex; align-items: center; gap: 12px; margin-top: 28px; background: #fff; color: #16182A;
+  text-decoration: none; padding: 14px 24px; border-radius: 16px; font-weight: 700; font-size: 18px;
+  box-shadow: 0 10px 30px rgba(20, 20, 70, .28); }
+.cta small { display: block; font-size: 12px; font-weight: 600; opacity: .65; line-height: 1.1; }
+.cta svg { width: 26px; height: 26px; flex: none; }
+.fine { margin-top: 14px; font-size: 14px; opacity: .85; }
+.hero .phone { margin: 0 auto -90px; }
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; padding-top: 44px; text-align: center; }
+  .hero .lede { margin-left: auto; margin-right: auto; }
+  .hero .phone { margin-top: 12px; }
+}
+
+/* Phone frame */
+.phone { width: min(300px, 72vw); border: 9px solid var(--bezel); border-radius: 50px; overflow: hidden;
+  background: var(--bezel); box-shadow: var(--shadow); }
+.phone img { width: 100%; height: auto; border-radius: 41px; transform: scale(1.012); }
+.hero .phone { border-color: #12131F; background: #12131F; box-shadow: 0 30px 70px rgba(15, 15, 60, .45); }
+
+/* Who it's for */
+.who { padding: 44px 0 8px; text-align: center; }
+.who p { color: var(--muted); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; padding: 0; list-style: none; }
+.chips li { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 15px; }
+.chips li::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 8px; background: var(--c, var(--brand)); }
+
+/* Feature rows */
+.feature { padding: 72px 0 0; }
+.feature .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+.feature.flip .shot { order: 2; }
+.shot { display: flex; justify-content: center; }
+.kicker { display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--k, var(--brand)); background: color-mix(in srgb, var(--k, var(--brand)) 14%, transparent); padding: 5px 11px; border-radius: 8px; }
+.feature h2, .block h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); font-weight: 800; margin-top: 14px; }
+.feature p.sub, .block p.sub { color: var(--muted); font-size: 1.1rem; margin-top: 12px; max-width: 36em; }
+.ticks { list-style: none; padding: 0; margin: 22px 0 0; }
+.ticks li { position: relative; padding-left: 34px; margin: 12px 0; }
+.ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--k, var(--brand)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6 11.5l3.2 3.2L16 8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+@media (max-width: 860px) {
+  .feature { padding-top: 56px; }
+  .feature .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .feature.flip .shot { order: 0; }
+}
+
+/* Generic blocks */
+.block { padding: 84px 0 0; }
+.center { text-align: center; }
+.center p.sub { margin-left: auto; margin-right: auto; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+@media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; text-align: left; }
+.tile .ico { width: 42px; height: 42px; border-radius: 12px; background: var(--c, var(--brand)); display: grid; place-items: center; }
+.tile .ico svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.tile h3 { font-size: 1.08rem; margin-top: 14px; letter-spacing: -0.01em; }
+.tile p { color: var(--muted); font-size: .98rem; margin-top: 6px; }
+.tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--brand2); border: 1.5px solid var(--brand2);
+  border-radius: 6px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+
+/* Privacy band */
+.private { margin-top: 84px; background: var(--tint); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.private .wrap { padding: 56px 0; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+.private .lock { width: 76px; height: 76px; border-radius: 22px; background: linear-gradient(135deg, var(--brand), var(--brand2)); display: grid; place-items: center; }
+.private .lock svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.private h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); font-weight: 800; }
+.private p { color: var(--muted); margin-top: 10px; max-width: 46em; }
+@media (max-width: 620px) { .private .wrap { grid-template-columns: 1fr; } }
+
+/* Pricing */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 32px; text-align: left; }
+@media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+.plan { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
+.plan.pro { border: 2px solid var(--brand); box-shadow: var(--shadow); }
+.plan h3 { font-size: 1.4rem; }
+.plan .price { color: var(--muted); margin-top: 4px; font-weight: 600; }
+.plan .ticks { margin-top: 16px; }
+.seg { display: inline-flex; background: var(--tint); border-radius: 12px; padding: 4px; margin-top: 22px; }
+.seg button { font: inherit; font-size: 14px; font-weight: 700; color: var(--muted); background: none; border: 0; padding: 7px 14px; border-radius: 9px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.14); }
+.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+.prices div { background: var(--tint); border-radius: 14px; padding: 12px 10px; text-align: center; }
+.prices b { display: block; font-size: 1.25rem; letter-spacing: -0.01em; }
+.prices span { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; }
+.prices em { display: block; font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; color: var(--clinic); margin-top: 3px; min-height: 14px; }
+.small { font-size: 13.5px; color: var(--muted); margin-top: 14px; }
+
+/* Support */
+.help { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 32px; }
+@media (max-width: 760px) { .help { grid-template-columns: 1fr; } }
+.help .tile h3 { margin-top: 0; }
+.help .tile h3 + p { margin-bottom: 14px; }
+.button { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; margin-top: 14px; overflow-wrap: anywhere; }
+details { border-top: 1px solid var(--line); padding: 12px 0; }
+details:first-of-type { border-top: 0; padding-top: 0; }
+summary { font-weight: 700; cursor: pointer; }
+details p { color: var(--muted); margin-top: 8px; font-size: .98rem; }
+
+/* Closing call + footer */
+.closing { margin-top: 84px; background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; text-align: center; }
+.closing .wrap { padding: 64px 0; }
+.closing h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; }
+.closing p { opacity: .92; margin-top: 10px; }
+footer { padding: 30px 0 44px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; }
 footer a { color: var(--muted); }
+footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
 </style>
 </head>
 <body>
-<header><div class="wrap">
-<h1>Shiftloop Support</h1>
-<p>Shiftloop is a shift calendar and pay tracker for iPhone, iPad and Apple Watch.</p>
+
+<header class="top"><div class="wrap">
+  <a class="logo" href="./"><img src="assets/icon.png" alt="" width="34" height="34">Shiftloop</a>
+  <nav aria-label="Sections">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#support">Support</a>
+  </nav>
+  <a class="pill" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get the app</a>
 </div></header>
-<main class="wrap">
-<div class="card">
-<h2>Contact</h2>
-<p>Questions, problems or ideas? Email us and we'll get back to you.</p>
-<p><a class="button" href="mailto:whitecarrotstudios@gmail.com?subject=Shiftloop">Email whitecarrotstudios@gmail.com</a></p>
-<p class="muted">The app's own Help is in Settings → Help.</p>
-</div>
-<div class="card">
-<h2>Restore Shiftloop Pro</h2>
-<p>On a new iPhone or iPad, open Settings → Get Shiftloop Pro and tap Restore Purchases. Use the same Apple Account you bought Pro with.</p>
-<h2>Cancel a subscription</h2>
-<p>Subscriptions are handled by Apple. On your iPhone, open the Settings app → your name → Subscriptions → Shiftloop Pro. Cancel at least 24 hours before it renews.</p>
-<h2>Shifts aren't syncing between devices</h2>
-<p>Shiftloop syncs through your own iCloud. Check you're signed in to the same Apple Account on both devices, and that iCloud is on for Shiftloop in the Settings app → your name → iCloud.</p>
-<h2>Delete your data</h2>
-<p>In Shiftloop, open Settings → Erase all data. The <a href="privacy.html#deleting-your-data">privacy policy</a> also explains how to remove the copy in iCloud and any team data.</p>
-</div>
-<footer><a href="privacy.html">Privacy Policy</a> · <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a></footer>
-</main>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="eyebrow">Shift calendar &amp; pay tracker</p>
+    <h1>The shift calendar that knows what you're owed.</h1>
+    <p class="lede">Scan your roster, see every shift at a glance, and know what you'll earn, overtime and holiday pay included.</p>
+    <a class="cta" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#16182A" d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.600V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
+      <span><small>Free on the</small>App Store</span>
+    </a>
+    <p class="fine">iPhone, iPad and Apple Watch · iOS 18 or later · No account needed</p>
+  </div>
+  <div class="phone"><img src="assets/screen-calendar.jpg" width="599" height="1300" alt="Shiftloop's month calendar with colour-coded day, night and long-day shifts, hours this week and estimated pay."></div>
+</div></section>
+
+<section class="who"><div class="wrap">
+  <p>Made for people whose week never looks the same twice</p>
+  <ul class="chips">
+    <li style="--c: var(--long)">Nurses</li>
+    <li style="--c: var(--clinic)">Paramedics</li>
+    <li style="--c: var(--day)">Firefighters</li>
+    <li style="--c: var(--night)">Police</li>
+    <li style="--c: var(--teal)">Care staff</li>
+    <li style="--c: var(--brand2)">Factory and warehouse crews</li>
+    <li style="--c: var(--brand)">Hospitality</li>
+  </ul>
+</div></section>
+
+<section class="feature" id="features" style="--k: var(--brand)"><div class="wrap">
+  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-pattern.jpg" width="599" height="1300" alt="The repeating pattern list: 4 on 4 off, Continental, Pitman, Panama, DuPont, 5 on 2 off, 24 on 48 off and Custom."></div></div>
+  <div>
+    <span class="kicker">Your calendar</span>
+    <h2>Fill your month in seconds</h2>
+    <p class="sub">Set your rotation once and every shift lands on the right day, for as far ahead as you need.</p>
+    <ul class="ticks">
+      <li>Repeat any pattern: 4-on-4-off, Continental, Pitman, Panama, DuPont, 24-on-48-off or your own cycle</li>
+      <li>Or pick a shift and tap the days it falls on</li>
+      <li>Your next shift and a live countdown sit at the top of the calendar</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="feature flip" style="--k: var(--teal)"><div class="wrap">
+  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-scan.jpg" width="599" height="1300" alt="The roster scan result: 7 days found, with each roster code matched to a shift before the shifts are added."></div></div>
+  <div>
+    <span class="kicker">Roster scan</span>
+    <h2>Scan your roster</h2>
+    <p class="sub">Stop typing shifts in by hand from the sheet on the wall.</p>
+    <ul class="ticks">
+      <li>Take a photo, or choose a screenshot or PDF</li>
+      <li>Shiftloop reads the dates and codes on your iPhone. Nothing is uploaded</li>
+      <li>You check the days before anything is added</li>
+      <li>Your first 3 scans are free</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="feature" style="--k: var(--clinic)"><div class="wrap">
+  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-earnings.jpg" width="599" height="1300" alt="The earnings screen: pay for a two-week pay period, split by job and by regular and overtime hours."></div></div>
+  <div>
+    <span class="kicker">Pay</span>
+    <h2>Know what you'll earn</h2>
+    <p class="sub">See what each shift pays before the pay stub arrives, so a short payment doesn't slip past you.</p>
+    <ul class="ticks">
+      <li>Daily and weekly overtime, public holidays, and extra pay for nights and weekends</li>
+      <li>Your next payday and what's coming in it, before tax</li>
+      <li>Pay by week, pay period, month or year</li>
+      <li>A raise starts on the right date, without changing what past shifts paid</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="block center"><div class="wrap">
+  <span class="kicker">Everyday</span>
+  <h2>Always one glance away</h2>
+  <p class="sub">The small things that make a shift calendar worth opening every day.</p>
+  <div class="grid">
+    <div class="tile"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.500 7 2.500 7h-17S6 15 6 9zM10 20a2 2 0 0 0 4 0"/></svg></div>
+      <h3>Reminders</h3><p>A nudge before each shift, with your own sound.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M10 7h4M9 12h6M9 15.500h4"/></svg></div>
+      <h3>Lock Screen widget</h3><p>Your next shift without unlocking your phone.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--brand2)"><svg viewBox="0 0 24 24"><rect x="7" y="6" width="10" height="12" rx="3"/><path d="M9 6l.700-3h4.600l.700 3M9 18l.700 3h4.600l.700-3M12 10v2.500l1.500 1"/></svg></div>
+      <h3>Widgets and Apple Watch <span class="tag">PRO</span></h3><p>Home Screen widgets, the Live Activity, and your schedule on your wrist.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--long)"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5.500A1.500 1.500 0 0 1 10.500 4h3A1.500 1.500 0 0 1 15 5.500V7M3 13h18"/></svg></div>
+      <h3>Several jobs <span class="tag">PRO</span></h3><p>Each job gets its own colour, shift types and pay, in one calendar.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--teal)"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div>
+      <h3>Swap shifts with coworkers</h3><p>Release a shift to your team and a coworker can take it. Free, with no account.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--clinic)"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.300"/><path d="M2.500 19c.500-3 2.700-4.500 5.500-4.500s5 1.500 5.500 4.500M15 14.600c.600-.200 1.300-.300 2-.300 2.200 0 3.900 1.200 4.500 3.700"/></svg></div>
+      <h3>Live sharing <span class="tag">PRO</span></h3><p>Your calendar on your family's phones, always current.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--brand)"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.500-7.970A5.500 5.500 0 0 1 17.200 9.200 4.400 4.400 0 0 1 17 18z"/></svg></div>
+      <h3>iPhone and iPad in sync</h3><p>Syncs through your own iCloud. Shifts can also appear in Apple's Calendar app.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.800 3 2.800 15 0 18M12 3c-2.800 3-2.800 15 0 18"/></svg></div>
+      <h3>12 languages</h3><p>English, French, Spanish, German, Portuguese, Italian, Dutch, Polish, Japanese, Korean, Chinese and Arabic.</p></div>
+    <div class="tile"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><path d="M4 18L9.500 6 15 18M6 14h7M17 18v-6.500M17 11.500c0-1.500 4-1.500 4 .500V18"/></svg></div>
+      <h3>Easy to read</h3><p>Big, clear text and controls that follow your iPhone's text size.</p></div>
+  </div>
+</div></section>
+
+<section class="private"><div class="wrap">
+  <div class="lock"><svg viewBox="0 0 24 24"><rect x="5" y="10.500" width="14" height="10" rx="2.500"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></svg></div>
+  <div>
+    <h2>Your schedule stays private</h2>
+    <p>No account and no ads. Your shifts and pay stay on your devices and in your private iCloud. If you join a team to swap shifts, your pay is never shared. The <a href="privacy.html">privacy policy</a> has the details.</p>
+  </div>
+</div></section>
+
+<section class="block center" id="pricing"><div class="wrap">
+  <span class="kicker">Pricing</span>
+  <h2>Free to use. Pro when you need more.</h2>
+  <p class="sub">The calendar is free with no time limit. Pro adds the extras below.</p>
+  <div class="plans">
+    <div class="plan">
+      <h3>Free</h3>
+      <p class="price">No time limit</p>
+      <ul class="ticks">
+        <li>The calendar and repeating patterns</li>
+        <li>Reminders and the Lock Screen widget</li>
+        <li>Pay and overtime tracking for one job</li>
+        <li>Teams and shift swaps</li>
+        <li>Your first 3 roster scans</li>
+      </ul>
+      <a class="button" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get Shiftloop free</a>
+    </div>
+    <div class="plan pro">
+      <h3>Shiftloop Pro</h3>
+      <p class="price">Everything in Free, plus:</p>
+      <ul class="ticks">
+        <li>Multiple jobs</li>
+        <li>Unlimited roster scans</li>
+        <li>Home Screen widgets, the Live Activity and Apple Watch</li>
+        <li>Live sharing with family</li>
+        <li>Pay history: backdate a raise or schedule one ahead</li>
+      </ul>
+      <div class="seg" role="group" aria-label="Show prices for">
+        <button type="button" data-region="us" aria-pressed="true">US</button>
+        <button type="button" data-region="ca" aria-pressed="false">Canada</button>
+        <button type="button" data-region="uk" aria-pressed="false">UK</button>
+      </div>
+      <div class="prices">
+        <div><b data-plan="yearly">$12.99</b><span>a year</span><em>1 MONTH FREE</em></div>
+        <div><b data-plan="monthly">$2.99</b><span>a month</span><em></em></div>
+        <div><b data-plan="lifetime">$34.99</b><span>once, for life</span><em></em></div>
+      </div>
+      <p class="small" id="price-note">Prices in US dollars. The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="block center" id="support"><div class="wrap">
+  <span class="kicker">Support</span>
+  <h2>Help and contact</h2>
+  <p class="sub">Quick answers, and a way to reach us.</p>
+  <div class="help">
+    <div class="tile">
+      <h3>Contact us</h3>
+      <p>Questions, problems or ideas? Email us and we'll get back to you. The app's own Help is in Settings → Help.</p>
+      <a class="button" href="mailto:whitecarrotstudios@gmail.com?subject=Shiftloop">whitecarrotstudios@gmail.com</a>
+    </div>
+    <div class="tile">
+      <details>
+        <summary>How do I restore Shiftloop Pro on a new phone?</summary>
+        <p>Open Settings → Get Shiftloop Pro and tap Restore Purchases. Use the same Apple Account you bought Pro with.</p>
+      </details>
+      <details>
+        <summary>How do I cancel a subscription?</summary>
+        <p>Subscriptions are handled by Apple. On your iPhone, open the Settings app → your name → Subscriptions → Shiftloop Pro. Cancel at least 24 hours before it renews.</p>
+      </details>
+      <details>
+        <summary>My shifts aren't syncing between devices</summary>
+        <p>Check you're signed in to the same Apple Account on both devices, and that iCloud is on for Shiftloop in the Settings app → your name → iCloud.</p>
+      </details>
+      <details>
+        <summary>How do I delete my data?</summary>
+        <p>In Shiftloop, open Settings → Erase all data. The <a href="privacy.html#deleting-your-data">privacy policy</a> explains how to remove the copy in iCloud and any team data.</p>
+      </details>
+      <p style="margin-top: 14px"><a href="support.html">All help topics</a></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="closing"><div class="wrap">
+  <h2>Know your next shift, and what it pays.</h2>
+  <p>Free on the App Store for iPhone, iPad and Apple Watch.</p>
+  <a class="cta" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#16182A" d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.600V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
+    <span><small>Free on the</small>App Store</span>
+  </a>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 WhiteCarrotStudios</span>
+  <a href="support.html">Support</a>
+  <a href="privacy.html">Privacy Policy</a>
+  <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a>
+  <a href="mailto:whitecarrotstudios@gmail.com">Contact</a>
+  <p class="legal">Screens show sample data. Apple, iPhone, iPad, Apple Watch, iCloud and App Store are trademarks of Apple Inc.</p>
+</div></footer>
+
+<script>
+(function () {
+  var prices = {"us": {"yearly": "$12.99", "monthly": "$2.99", "lifetime": "$34.99"}, "ca": {"yearly": "$17.99", "monthly": "$3.99", "lifetime": "$49.99"}, "uk": {"yearly": "£12.99", "monthly": "£2.99", "lifetime": "£34.99"}};
+  var notes = {
+    us: "Prices in US dollars.",
+    ca: "Prices in Canadian dollars, plus applicable taxes.",
+    uk: "Prices in pounds."
+  };
+  var rest = " The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.";
+  var buttons = document.querySelectorAll(".seg button");
+  function show(region) {
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.region === region)); });
+    document.querySelectorAll("[data-plan]").forEach(function (el) { el.textContent = prices[region][el.dataset.plan]; });
+    document.getElementById("price-note").textContent = notes[region] + rest;
+  }
+  buttons.forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.region); }); });
+  var lang = (navigator.language || "").toLowerCase();
+  if (lang.slice(-3) === "-ca") show("ca");
+  else if (lang.slice(-3) === "-gb") show("uk");
+})();
+</script>
 </body>
 </html>
