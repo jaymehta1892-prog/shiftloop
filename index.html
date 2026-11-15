@@ -4,207 +4,339 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#4F5BD5">
+<meta name="theme-color" content="#F7F5F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1120" media="(prefers-color-scheme: dark)">
 <meta name="apple-itunes-app" content="app-id=6818672597">
 <title>Shiftloop: shift calendar and pay tracker for iPhone</title>
-<meta name="description" content="Scan your roster, see every shift at a glance, and know what you'll earn, overtime and holiday pay included. For nurses, first responders and anyone on shifts.">
+<meta name="description" content="Shiftloop keeps your whole rotation on one calendar and works out what each shift pays, with overtime, nights, weekends and holidays counted. Free on the App Store.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Shiftloop: the shift calendar that knows what you're owed">
-<meta property="og:description" content="Scan your roster, see every shift at a glance, and know what you'll earn. Free on the App Store.">
+<meta property="og:title" content="Shiftloop: your shifts, sorted. Your pay, checked.">
+<meta property="og:description" content="A shift calendar for iPhone that also works out what each shift pays. Free on the App Store.">
 <meta property="og:image" content="https://shiftloopapp.com/assets/icon.png">
 <meta property="og:url" content="https://shiftloopapp.com/">
 <meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://shiftloopapp.com/">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>
+/* Colours: the app's own. Brand indigo to violet, and one colour per kind of shift. */
 :root {
   --brand: #4F5BD5; --brand2: #8B5CF6;
   --day: #F0A030; --night: #3F4FA8; --long: #C9586E; --clinic: #3E9B5A; --teal: #2E9B8A;
-  --bg: #F6F6FB; --card: #FFFFFF; --text: #16182A; --muted: #5E6178; --line: #E4E5F0;
-  --tint: #EEEFFC; --link: #4F5BD5; --bezel: #12131F;
-  --shadow: 0 18px 50px rgba(40, 44, 110, .18);
+  --paper: #F7F5F0; --card: #FFFFFF; --ink: #16182A; --muted: #5B5E73; --line: rgba(22, 24, 42, .13);
+  --soft: #EEEBE3; --link: #4450C8; --panel: #16182A; --panel-ink: #F3F4FB; --panel-muted: #B4B8D0;
+  --panel-line: rgba(255, 255, 255, .14); --bezel: #16182A;
+  --lift: 0 1px 0 rgba(22, 24, 42, .04), 0 14px 34px rgba(22, 24, 42, .08);
+  --round: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0C0D16; --card: #171927; --text: #F1F2FA; --muted: #A5A8C0; --line: #2A2D42;
-    --tint: #1D2040; --link: #A5ADFF; --bezel: #2A2D42;
-    --shadow: 0 18px 50px rgba(0, 0, 0, .5);
+    --paper: #0F1120; --card: #191C30; --ink: #EEF0FA; --muted: #A6AAC4; --line: rgba(255, 255, 255, .13);
+    --soft: #1E2138; --link: #AAB2FF; --panel: #191C30; --bezel: #33375A;
+    --lift: 0 1px 0 rgba(0, 0, 0, .2), 0 14px 34px rgba(0, 0, 0, .35);
   }
-  .kicker { color: color-mix(in srgb, var(--k, var(--brand)) 50%, white) !important; }
-  .tag { color: #C4B5FD !important; border-color: #C4B5FD !important; }
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--bg); color: var(--text);
-  font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-img { max-width: 100%; display: block; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--sans); }
+img { max-width: 100%; height: auto; display: block; }
 a { color: var(--link); }
-h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--round); letter-spacing: -.015em; text-wrap: balance; margin: 0; }
 p { margin: 0; }
-.wrap { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
-section { scroll-margin-top: 72px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+section { scroll-margin-top: 76px; }
+:focus-visible { outline: 3px solid var(--brand2); outline-offset: 3px; border-radius: 6px; }
 
 /* Top bar */
-.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 86%, transparent);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid var(--line); }
-.top .wrap { display: flex; align-items: center; gap: 20px; height: 60px; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 19px; color: var(--text); text-decoration: none; margin-right: auto; }
-.logo img { width: 34px; height: 34px; border-radius: 22.5%; }
-.logo .name { display: flex; flex-direction: column; line-height: 1.1; }
-.logo small { font-size: 11.5px; font-weight: 600; color: var(--muted); letter-spacing: .01em; }
-.top nav { display: flex; gap: 22px; }
+.top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--paper) 88%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 22px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; margin-right: auto; }
+.logo img { width: 36px; height: 36px; border-radius: 22.5%; }
+.logo b { display: block; font: 700 19px/1.1 var(--round); }
+.logo small { display: block; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.top nav { display: flex; gap: 24px; }
 .top nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 15px; }
-.top nav a:hover { color: var(--text); }
-.pill { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; font-weight: 700;
-  font-size: 15px; padding: 8px 16px; border-radius: 999px; white-space: nowrap; }
-@media (max-width: 720px) { .top nav { display: none; } }
+.top nav a:hover { color: var(--ink); }
+.get { background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 700; font-size: 15px;
+  padding: 9px 16px; border-radius: 999px; white-space: nowrap; }
+@media (max-width: 780px) { .top nav { display: none; } }
 
 /* Hero */
-.hero { background: radial-gradient(900px 500px at 85% 0%, rgba(255,255,255,.22), transparent 60%),
-  linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; overflow: hidden; }
-.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: center; padding: 64px 0 0; }
-.eyebrow { font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
-.hero h1 { font-size: clamp(2.3rem, 5.4vw, 3.7rem); font-weight: 800; margin-top: 14px; }
-.hero .lede { font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 18px; max-width: 34em; opacity: .95; }
-.cta { display: inline-flex; align-items: center; gap: 12px; margin-top: 28px; background: #fff; color: #16182A;
-  text-decoration: none; padding: 14px 24px; border-radius: 16px; font-weight: 700; font-size: 18px;
-  box-shadow: 0 10px 30px rgba(20, 20, 70, .28); }
-.cta small { display: block; font-size: 12px; font-weight: 600; opacity: .65; line-height: 1.1; }
-.cta svg { width: 26px; height: 26px; flex: none; }
-.fine { margin-top: 14px; font-size: 14px; opacity: .85; }
-.hero .phone { margin: 0 auto -90px; }
-@media (max-width: 860px) {
-  .hero .wrap { grid-template-columns: 1fr; padding-top: 44px; text-align: center; }
-  .hero .lede { margin-left: auto; margin-right: auto; }
-  .hero .phone { margin-top: 12px; }
-}
+.hero { padding: 64px 0 72px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+.label { display: inline-flex; align-items: center; gap: 8px; font: 700 13px/1 var(--sans); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); }
+.label i { width: 9px; height: 9px; border-radius: 3px; background: var(--c, var(--brand)); }
+.hero h1 { font-size: clamp(42px, 5.8vw, 70px); line-height: 1.03; font-weight: 800; margin: 18px 0 20px; }
+.hero h1 span { display: block; padding-bottom: .08em; background: linear-gradient(100deg, var(--brand), var(--brand2)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; }
+@media (prefers-color-scheme: dark) { .hero h1 span { background-image: linear-gradient(100deg, #8F99FF, #BC9CFF); } }
+.lede { font-size: clamp(18px, 2vw, 21px); color: var(--muted); max-width: 31em; }
+.store { display: inline-flex; align-items: center; gap: 12px; margin-top: 30px; background: var(--ink); color: var(--paper);
+  text-decoration: none; padding: 13px 24px 13px 18px; border-radius: 16px; font: 700 19px/1.15 var(--round); box-shadow: var(--lift); }
+.store small { display: block; font: 600 12px/1.2 var(--sans); opacity: .75; }
+.store svg { width: 26px; height: 26px; flex: none; }
+.store:hover { transform: translateY(-1px); }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 22px 0 0; padding: 0; list-style: none; font-size: 15px; color: var(--muted); }
+.facts li { display: flex; align-items: center; gap: 7px; }
+.facts li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--clinic); }
 
-/* Phone frame */
-.phone { width: min(300px, 72vw); border: 9px solid var(--bezel); border-radius: 50px; overflow: hidden;
-  background: var(--bezel); box-shadow: var(--shadow); }
-.phone img { width: 100%; height: auto; border-radius: 41px; transform: scale(1.012); }
-.hero .phone { border-color: #12131F; background: #12131F; box-shadow: 0 30px 70px rgba(15, 15, 60, .45); }
+/* The calendar you can try */
+.demo { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 20px; box-shadow: var(--lift); }
+.demo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.demo-head h2 { font-size: 21px; }
+.demo-head span { font-size: 13.5px; color: var(--muted); }
+.picks { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.picks button { font: 600 14px/1 var(--sans); padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line);
+  background: transparent; color: var(--ink); cursor: pointer; }
+.picks button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.dow, .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.dow span { text-align: center; font: 700 11.5px/1 var(--sans); letter-spacing: .06em; color: var(--muted); padding: 4px 0 6px; }
+.days button, .days i { aspect-ratio: 1 / 1.05; border-radius: 11px; }
+.days button { position: relative; border: 0; padding: 0; cursor: pointer; background: var(--soft); color: var(--ink);
+  font: 600 12px/1 var(--sans); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  transition: background-color .25s ease, color .25s ease, transform .15s ease; }
+.days button:active { transform: scale(.94); }
+.days button b { font: 800 13.5px/1 var(--round); min-height: 13.5px; }
+.days button[data-s="D"] { background: var(--day); color: #2A1B02; }
+.days button[data-s="N"] { background: var(--night); color: #fff; }
+.days button[data-s="L"] { background: var(--long); color: #fff; }
+.days button.today::after { content: ""; position: absolute; inset: -3px; border-radius: 14px; border: 2px solid var(--brand2); }
+.totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.totals div { background: var(--soft); border-radius: 14px; padding: 11px 12px; }
+.totals b { display: block; font: 800 22px/1.1 var(--round); font-variant-numeric: tabular-nums; }
+.totals span { font-size: 12.5px; color: var(--muted); }
+.demo-note { margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.key span { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 11px; height: 11px; border-radius: 4px; background: var(--c); }
 
 /* Who it's for */
-.who { padding: 44px 0 8px; text-align: center; }
-.who p { color: var(--muted); font-weight: 600; }
-.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; padding: 0; list-style: none; }
-.chips li { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 15px; }
-.chips li::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 8px; background: var(--c, var(--brand)); }
+.roles { border-block: 1px solid var(--line); padding: 20px 0; }
+.roles .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.roles p { font-weight: 700; margin-right: 6px; }
+.roles ul { display: contents; }
+.roles li { list-style: none; font-size: 15px; font-weight: 600; padding: 6px 13px 6px 10px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+.roles li::before { content: ""; width: 10px; height: 10px; border-radius: 4px; background: var(--c); }
 
-/* Feature rows */
-.feature { padding: 72px 0 0; }
-.feature .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-.feature.flip .shot { order: 2; }
-.shot { display: flex; justify-content: center; }
-.kicker { display: inline-block; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--k, var(--brand)); background: color-mix(in srgb, var(--k, var(--brand)) 14%, transparent); padding: 5px 11px; border-radius: 8px; }
-.feature h2, .block h2 { font-size: clamp(1.7rem, 3.6vw, 2.4rem); font-weight: 800; margin-top: 14px; }
-.feature p.sub, .block p.sub { color: var(--muted); font-size: 1.1rem; margin-top: 12px; max-width: 36em; }
-.ticks { list-style: none; padding: 0; margin: 22px 0 0; }
-.ticks li { position: relative; padding-left: 34px; margin: 12px 0; }
-.ticks li::before { content: ""; position: absolute; left: 0; top: 3px; width: 22px; height: 22px; border-radius: 50%;
-  background: var(--k, var(--brand)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6 11.5l3.2 3.2L16 8' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
-@media (max-width: 860px) {
-  .feature { padding-top: 56px; }
-  .feature .wrap { grid-template-columns: 1fr; gap: 28px; }
-  .feature.flip .shot { order: 0; }
-}
+/* Section basics */
+.block { padding: 84px 0; }
+.head { max-width: 40em; margin-bottom: 38px; }
+.head h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 800; margin: 14px 0 12px; }
+.head p { color: var(--muted); font-size: 18.5px; }
 
-/* Generic blocks */
-.block { padding: 84px 0 0; }
-.center { text-align: center; }
-.center p.sub { margin-left: auto; margin-right: auto; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
-@media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px) { .grid { grid-template-columns: 1fr; } }
-.tile { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 22px; text-align: left; }
-.tile .ico { width: 42px; height: 42px; border-radius: 12px; background: var(--c, var(--brand)); display: grid; place-items: center; }
-.tile .ico svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.tile h3 { font-size: 1.08rem; margin-top: 14px; letter-spacing: -0.01em; }
-.tile p { color: var(--muted); font-size: .98rem; margin-top: 6px; }
-.tag { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .06em; color: var(--brand2); border: 1.5px solid var(--brand2);
-  border-radius: 6px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+/* Three ways in */
+.ways { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: way; }
+.way { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px 24px 24px; counter-increment: way; position: relative; }
+.way::before { content: counter(way); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 13px;
+  background: var(--c); color: #fff; font: 800 19px/1 var(--round); margin-bottom: 18px; }
+.way h3 { font-size: 22px; margin-bottom: 8px; }
+.way p { color: var(--muted); font-size: 16px; }
+.way p + p { margin-top: 10px; font-size: 14px; font-weight: 600; color: var(--ink); }
 
-/* Privacy band */
-.private { margin-top: 84px; background: var(--tint); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.private .wrap { padding: 56px 0; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
-.private .lock { width: 76px; height: 76px; border-radius: 22px; background: linear-gradient(135deg, var(--brand), var(--brand2)); display: grid; place-items: center; }
-.private .lock svg { width: 40px; height: 40px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.private h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); font-weight: 800; }
-.private p { color: var(--muted); margin-top: 10px; max-width: 46em; }
-@media (max-width: 620px) { .private .wrap { grid-template-columns: 1fr; } }
+/* A look inside */
+.inside { padding: 0 0 84px; }
+.reel { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 22px 22px;
+  margin: 0 auto; max-width: 1164px; scrollbar-width: thin; }
+.reel figure { flex: 0 0 auto; width: min(250px, 62vw); margin: 0; scroll-snap-align: center; }
+.phone { background: var(--bezel); border-radius: 38px; padding: 8px; box-shadow: var(--lift); }
+.phone img { border-radius: 31px; width: 100%; }
+.reel figcaption { text-align: center; margin-top: 14px; font-weight: 700; font-size: 15.5px; }
+.reel figcaption span { display: block; font-weight: 500; font-size: 14px; color: var(--muted); }
+@media (min-width: 1164px) { .reel { justify-content: center; overflow: visible; } .reel figure { width: 204px; } }
+
+/* Pay */
+.pay { background: var(--panel); color: var(--panel-ink); border-radius: 34px; padding: 56px; display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 52px; align-items: center; }
+.pay .label { color: var(--panel-muted); }
+.pay h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 800; margin: 14px 0 12px; }
+.pay > div:first-child > p { color: var(--panel-muted); font-size: 18.5px; }
+.checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+.checks li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; font-size: 16.5px; }
+.checks li::before { content: ""; width: 24px; height: 24px; border-radius: 8px; background: var(--clinic)
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M6.5 12.5l3.5 3.5 7.5-8'/%3E%3C/svg%3E") center / 18px no-repeat; }
+.slip { background: #FFFDF8; color: #16182A; border-radius: 20px; padding: 24px 24px 22px; font-variant-numeric: tabular-nums;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .35); transform: rotate(1.4deg); }
+.slip header { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding-bottom: 14px; border-bottom: 2px dashed rgba(22, 24, 42, .2); }
+.slip header b { font: 800 18px/1.2 var(--round); }
+.slip header span { font-size: 13px; color: #5B5E73; }
+.slip dl { margin: 14px 0 0; display: grid; gap: 11px; }
+.slip dl div { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: baseline; }
+.slip dl i { width: 12px; height: 12px; border-radius: 4px; background: var(--c); align-self: center; }
+.slip dt { font-weight: 600; font-size: 15.5px; }
+.slip dt small { display: block; font-weight: 500; font-size: 13px; color: #5B5E73; }
+.slip dd { margin: 0; font-weight: 700; font-size: 15.5px; }
+.slip footer { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding-top: 14px; border-top: 2px dashed rgba(22, 24, 42, .2); }
+.slip footer span { font-weight: 700; }
+.slip footer b { font: 800 28px/1 var(--round); }
+.slip p { margin-top: 10px; font-size: 12.5px; color: #5B5E73; }
+
+/* Everything else: tiles of different sizes */
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+.cell { grid-column: span 2; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+.cell.wide { grid-column: span 3; }
+.cell h3 { font-size: 19.5px; margin: 14px 0 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cell p { color: var(--muted); font-size: 15.5px; }
+.ico { width: 42px; height: 42px; border-radius: 13px; background: var(--c); display: grid; place-items: center; }
+.ico svg { width: 23px; height: 23px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pro { font: 800 10.5px/1 var(--round); letter-spacing: .06em; color: #fff; padding: 4px 7px; border-radius: 999px;
+  background: linear-gradient(100deg, var(--brand), var(--brand2)); }
+.langs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.langs span { font-size: 13px; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: var(--soft); }
+
+/* Privacy */
+.quiet { background: var(--soft); border-radius: 34px; padding: 52px 56px; }
+.quiet h2 { font-size: clamp(28px, 3.6vw, 42px); line-height: 1.1; font-weight: 800; max-width: 17em; }
+.trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 32px; }
+.trio h3 { font-size: 19px; margin-bottom: 6px; }
+.trio p { color: var(--muted); font-size: 15.5px; }
+.quiet > p { margin-top: 28px; font-size: 15px; color: var(--muted); }
 
 /* Pricing */
-.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 32px; text-align: left; }
-@media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
-.plan { background: var(--card); border: 1px solid var(--line); border-radius: 24px; padding: 28px; }
-.plan.pro { border: 2px solid var(--brand); box-shadow: var(--shadow); }
-.plan h3 { font-size: 1.4rem; }
-.plan .price { color: var(--muted); margin-top: 4px; font-weight: 600; }
-.plan .ticks { margin-top: 16px; }
-.seg { display: inline-flex; background: var(--tint); border-radius: 12px; padding: 4px; margin-top: 22px; }
-.seg button { font: inherit; font-size: 14px; font-weight: 700; color: var(--muted); background: none; border: 0; padding: 7px 14px; border-radius: 9px; cursor: pointer; }
-.seg button[aria-pressed="true"] { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.14); }
-.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
-.prices div { background: var(--tint); border-radius: 14px; padding: 12px 10px; text-align: center; }
-.prices b { display: block; font-size: 1.25rem; letter-spacing: -0.01em; }
-.prices span { display: block; font-size: 12.5px; color: var(--muted); font-weight: 600; }
-.prices em { display: block; font-style: normal; font-size: 10.5px; font-weight: 800; letter-spacing: .05em; color: var(--clinic); margin-top: 3px; min-height: 14px; }
-.small { font-size: 13.5px; color: var(--muted); margin-top: 14px; }
+.plans { display: grid; grid-template-columns: 1fr 1.15fr; gap: 18px; align-items: stretch; }
+.plan { background: var(--card); border: 1px solid var(--line); border-radius: 26px; padding: 30px; display: flex; flex-direction: column; }
+.plan.best { border: 2px solid var(--brand); }
+.plan h3 { font-size: 25px; }
+.plan > p { color: var(--muted); margin: 4px 0 18px; }
+.list { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 10px; font-size: 16px; }
+.list li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; }
+.list li::before { content: ""; width: 20px; height: 20px; margin-top: 3px; border-radius: 7px; background: var(--brand)
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round' d='M6.5 12.5l3.5 3.5 7.5-8'/%3E%3C/svg%3E") center / 15px no-repeat; }
+.btn { display: inline-block; margin-top: auto; text-align: center; text-decoration: none; font-weight: 700; padding: 13px 20px;
+  border-radius: 14px; background: var(--ink); color: var(--paper); }
+.btn.line { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); word-break: break-word; }
+.region { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--soft); margin-bottom: 14px; align-self: flex-start; }
+.region button { font: 600 14px/1 var(--sans); padding: 8px 14px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; }
+.region button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 4px rgba(22, 24, 42, .16); }
+.tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tags div { background: var(--soft); border-radius: 16px; padding: 14px 12px; }
+.tags b { display: block; font: 800 24px/1.1 var(--round); font-variant-numeric: tabular-nums; }
+.tags span { display: block; font-size: 13.5px; color: var(--muted); }
+.tags em { display: inline-block; margin-top: 7px; font: 800 10.5px/1 var(--round); letter-spacing: .05em; font-style: normal;
+  color: #fff; background: var(--clinic); padding: 4px 7px; border-radius: 999px; }
+.tags em:empty { display: none; }
+.smallprint { font-size: 13px; color: var(--muted); margin-top: 14px; }
 
-/* Support */
-.help { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 32px; }
-@media (max-width: 760px) { .help { grid-template-columns: 1fr; } }
-.help .tile h3 { margin-top: 0; }
-.help .tile h3 + p { margin-bottom: 14px; }
-.button { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; padding: 12px 18px; border-radius: 12px; font-weight: 700; margin-top: 14px; overflow-wrap: anywhere; }
-details { border-top: 1px solid var(--line); padding: 12px 0; }
-details:first-of-type { border-top: 0; padding-top: 0; }
-summary { font-weight: 700; cursor: pointer; }
-details p { color: var(--muted); margin-top: 8px; font-size: .98rem; }
+/* Help */
+.help { display: grid; grid-template-columns: .85fr 1.15fr; gap: 18px; align-items: start; }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; }
+.box h3 { font-size: 21px; margin-bottom: 8px; }
+.box p { color: var(--muted); font-size: 16px; }
+.box .btn { margin-top: 18px; }
+details { border-bottom: 1px solid var(--line); padding: 14px 0; }
+details:first-of-type { padding-top: 0; }
+summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 14px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font: 700 22px/1 var(--round); color: var(--muted); }
+details[open] summary::after { content: "–"; }
+details p { margin-top: 8px; }
+.more { margin-top: 16px; font-weight: 700; }
 
-/* Closing call + footer */
-.closing { margin-top: 84px; background: linear-gradient(135deg, var(--brand), var(--brand2)); color: #fff; text-align: center; }
-.closing .wrap { padding: 64px 0; }
-.closing h2 { font-size: clamp(1.7rem, 4vw, 2.5rem); font-weight: 800; }
-.closing p { opacity: .92; margin-top: 10px; }
-footer { padding: 30px 0 44px; color: var(--muted); font-size: 14px; }
+/* Last call + footer */
+.last { margin: 0 22px; }
+.last .inner { max-width: 1076px; margin: 0 auto; border-radius: 34px; padding: 64px 28px; text-align: center; color: #fff;
+  background: linear-gradient(120deg, var(--brand), var(--brand2)); }
+.last h2 { font-size: clamp(30px, 4.4vw, 50px); line-height: 1.06; font-weight: 800; }
+.last p { margin-top: 12px; font-size: 18.5px; opacity: .92; }
+.last .store { background: #fff; color: #16182A; }
+footer { padding: 34px 0 48px; color: var(--muted); font-size: 14.5px; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 22px; align-items: center; }
 footer a { color: var(--muted); }
-footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
+footer .made { margin-right: auto; }
+footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; margin-top: 6px; }
+
+@media (max-width: 960px) {
+  .hero { padding: 40px 0 56px; }
+  .hero .wrap, .pay, .plans, .help { grid-template-columns: 1fr; }
+  .hero .wrap { gap: 38px; }
+  .ways, .trio { grid-template-columns: 1fr; }
+  .trio { gap: 20px; }
+  .block { padding: 62px 0; }
+  .inside { padding-bottom: 62px; }
+  .pay { padding: 36px 24px 40px; gap: 36px; border-radius: 28px; }
+  .quiet { padding: 36px 24px; border-radius: 28px; }
+  .cell, .cell.wide { grid-column: span 3; }
+  .slip { transform: none; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16.5px; }
+  .cell, .cell.wide { grid-column: span 6; }
+  .demo { padding: 14px; border-radius: 22px; }
+  .dow, .days { gap: 4px; }
+  .plan { padding: 24px 20px; }
+  .tags b { font-size: 20px; }
+  .last .inner { padding: 48px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .days button, .store { transition: none; }
+}
 </style>
 </head>
 <body>
 
 <header class="top"><div class="wrap">
-  <a class="logo" href="./"><img src="assets/icon.png" alt="" width="34" height="34"><span class="name">Shiftloop<small>by Mehta Foundry</small></span></a>
+  <a class="logo" href="./"><img src="assets/icon.png" alt="" width="36" height="36"><span><b>Shiftloop</b><small>by Mehta Foundry</small></span></a>
   <nav aria-label="Sections">
-    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pay">Pay</a>
     <a href="#pricing">Pricing</a>
-    <a href="#support">Support</a>
+    <a href="#support">Help</a>
   </nav>
-  <a class="pill" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get the app</a>
+  <a class="get" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get the app</a>
 </div></header>
 
+<main>
 <section class="hero"><div class="wrap">
   <div>
-    <p class="eyebrow">Shift calendar &amp; pay tracker</p>
-    <h1>The shift calendar that knows what you're owed.</h1>
-    <p class="lede">Scan your roster, see every shift at a glance, and know what you'll earn, overtime and holiday pay included.</p>
-    <a class="cta" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#16182A" d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.600V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
-      <span><small>Free on the</small>App Store</span>
+    <p class="label"><i></i>Shift calendar and pay tracker</p>
+    <h1>Your shifts, sorted. <span>Your pay, checked.</span></h1>
+    <p class="lede">Shiftloop keeps your whole rotation on one calendar and works out what each shift pays, with overtime, nights, weekends and holidays counted.</p>
+    <a class="store" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4.5-4.5M12 15l4.500-4.500M5 19.500h14"/></svg>
+      <span><small>Download free on the</small>App Store</span>
     </a>
-    <p class="fine">iPhone, iPad and Apple Watch · iOS 18 or later · No account needed</p>
+    <ul class="facts">
+      <li>No account</li>
+      <li>No ads</li>
+      <li>iPhone, iPad and Apple Watch</li>
+    </ul>
   </div>
-  <div class="phone"><img src="assets/screen-calendar.jpg" width="599" height="1300" alt="Shiftloop's month calendar with colour-coded day, night and long-day shifts, hours this week and estimated pay."></div>
+
+  <div class="demo" id="try">
+    <div class="demo-head">
+      <h2>Try a rotation</h2>
+      <span id="demo-month"></span>
+    </div>
+    <div class="picks" role="group" aria-label="Rotation">
+      <button type="button" data-p="four" aria-pressed="true">4 on, 4 off</button>
+      <button type="button" data-p="pitman" aria-pressed="false">Pitman</button>
+      <button type="button" data-p="dupont" aria-pressed="false">DuPont</button>
+      <button type="button" data-p="fire" aria-pressed="false">24 on, 48 off</button>
+      <button type="button" data-p="week" aria-pressed="false">Mon to Fri</button>
+    </div>
+    <div class="dow" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    <div class="days" id="demo-days"></div>
+    <div class="totals" aria-live="polite">
+      <div><b id="t-shifts">0</b><span>shifts</span></div>
+      <div><b id="t-hours">0</b><span>hours</span></div>
+      <div><b id="t-pay">$0</b><span>est. pay</span></div>
+    </div>
+    <div class="key">
+      <span><i style="--c: var(--day)"></i>Day</span>
+      <span><i style="--c: var(--night)"></i>Night</span>
+      <span><i style="--c: var(--long)"></i>24 hours</span>
+    </div>
+    <p class="demo-note">Tap any day to change it. Sample pay at $30 an hour; the app uses your own rate and adds overtime and extra pay.</p>
+  </div>
 </div></section>
 
-<section class="who"><div class="wrap">
-  <p>Made for people whose week never looks the same twice</p>
-  <ul class="chips">
+<section class="roles"><div class="wrap">
+  <p>Made for</p>
+  <ul>
     <li style="--c: var(--long)">Nurses</li>
     <li style="--c: var(--clinic)">Paramedics</li>
     <li style="--c: var(--day)">Firefighters</li>
@@ -215,137 +347,170 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
   </ul>
 </div></section>
 
-<section class="feature" id="features" style="--k: var(--brand)"><div class="wrap">
-  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-pattern.jpg" width="599" height="1300" alt="The repeating pattern list: 4 on 4 off, Continental, Pitman, Panama, DuPont, 5 on 2 off, 24 on 48 off and Custom."></div></div>
-  <div>
-    <span class="kicker">Your calendar</span>
-    <h2>Fill your month in seconds</h2>
-    <p class="sub">Set your rotation once and every shift lands on the right day, for as far ahead as you need.</p>
-    <ul class="ticks">
-      <li>Repeat any pattern: 4-on-4-off, Continental, Pitman, Panama, DuPont, 24-on-48-off or your own cycle</li>
-      <li>Or pick a shift and tap the days it falls on</li>
-      <li>Your next shift and a live countdown sit at the top of the calendar</li>
-    </ul>
+<section class="block" id="how"><div class="wrap">
+  <div class="head">
+    <p class="label"><i style="--c: var(--day)"></i>Getting started</p>
+    <h2>Three ways to get your shifts in</h2>
+    <p>Pick whichever suits your roster. Most people are set up in about a minute.</p>
+  </div>
+  <div class="ways">
+    <div class="way" style="--c: var(--brand)">
+      <h3>Repeat your rotation</h3>
+      <p>Choose 4-on-4-off, Continental, Pitman, Panama, DuPont, 5-on-2-off or 24-on-48-off, or build your own cycle. Set it once and it runs as far ahead as you need.</p>
+    </div>
+    <div class="way" style="--c: var(--long)">
+      <h3>Tap the days</h3>
+      <p>No fixed pattern? Pick a shift, then tap each day it falls on. Tap again to take it off.</p>
+    </div>
+    <div class="way" style="--c: var(--teal)">
+      <h3>Photograph the roster</h3>
+      <p>Take a photo, or choose a screenshot or PDF. Shiftloop reads the dates and codes on your iPhone, nothing is uploaded, and you check the days before anything is added.</p>
+      <p>Your first 3 scans are free.</p>
+    </div>
   </div>
 </div></section>
 
-<section class="feature flip" style="--k: var(--teal)"><div class="wrap">
-  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-scan.jpg" width="599" height="1300" alt="The roster scan result: 7 days found, with each roster code matched to a shift before the shifts are added."></div></div>
-  <div>
-    <span class="kicker">Roster scan</span>
-    <h2>Scan your roster</h2>
-    <p class="sub">Stop typing shifts in by hand from the sheet on the wall.</p>
-    <ul class="ticks">
-      <li>Take a photo, or choose a screenshot or PDF</li>
-      <li>Shiftloop reads the dates and codes on your iPhone. Nothing is uploaded</li>
-      <li>You check the days before anything is added</li>
-      <li>Your first 3 scans are free</li>
-    </ul>
+<section class="inside" aria-label="Screens from the app">
+  <div class="reel" tabindex="0">
+    <figure><div class="phone"><img src="assets/screen-calendar.jpg" width="599" height="1300" alt="The month calendar with colour-coded day, night and long-day shifts, hours this week and estimated pay."></div>
+      <figcaption>Your month<span>Next shift and a live countdown on top</span></figcaption></figure>
+    <figure><div class="phone"><img loading="lazy" src="assets/screen-pattern.jpg" width="599" height="1300" alt="The repeating pattern list: 4 on 4 off, Continental, Pitman, Panama, DuPont, 5 on 2 off, 24 on 48 off and Custom."></div>
+      <figcaption>Patterns<span>The common rotations, or your own</span></figcaption></figure>
+    <figure><div class="phone"><img loading="lazy" src="assets/screen-paint.jpg" width="599" height="1300" alt="Adding shifts: a row of shift types under the calendar, with days tapped to add them."></div>
+      <figcaption>Tap to add<span>Choose a shift, tap the days</span></figcaption></figure>
+    <figure><div class="phone"><img loading="lazy" src="assets/screen-scan.jpg" width="599" height="1300" alt="The roster scan result: 7 days found, with each roster code matched to a shift before the shifts are added."></div>
+      <figcaption>Roster scan<span>You check it before it's added</span></figcaption></figure>
+    <figure><div class="phone"><img loading="lazy" src="assets/screen-earnings.jpg" width="599" height="1300" alt="The earnings screen: pay for a two-week pay period, split by job and by regular and overtime hours."></div>
+      <figcaption>Earnings<span>By week, pay period, month or year</span></figcaption></figure>
+  </div>
+</section>
+
+<section id="pay"><div class="wrap">
+  <div class="pay">
+    <div>
+      <p class="label"><i style="--c: var(--clinic)"></i>Pay</p>
+      <h2>See the pay before the pay stub</h2>
+      <p>Shiftloop adds up every shift as you work it, so a short payment doesn't slip past you.</p>
+      <ul class="checks">
+        <li>Daily and weekly overtime, public holidays, and extra pay for nights and weekends</li>
+        <li>Your next payday and what's coming in it, before tax</li>
+        <li>Totals by week, pay period, month or year</li>
+        <li>A raise starts on the right date, without changing what past shifts paid</li>
+      </ul>
+    </div>
+    <div class="slip" aria-label="A sample pay period">
+      <header><b>Pay period</b><span>2 to 15 Nov · sample</span></header>
+      <dl>
+        <div><i style="--c: var(--brand)"></i><dt>Regular<small>72 h at $34.00</small></dt><dd>$2,448.00</dd></div>
+        <div><i style="--c: var(--long)"></i><dt>Overtime<small>8 h at $51.00</small></dt><dd>$408.00</dd></div>
+        <div><i style="--c: var(--night)"></i><dt>Night extra<small>24 h at $2.50</small></dt><dd>$60.00</dd></div>
+        <div><i style="--c: var(--day)"></i><dt>Public holiday<small>8 h at $17.00 extra</small></dt><dd>$136.00</dd></div>
+      </dl>
+      <footer><span>Estimated, before tax</span><b>$3,052.00</b></footer>
+      <p>Sample numbers. You set your own rate and rules.</p>
+    </div>
   </div>
 </div></section>
 
-<section class="feature" style="--k: var(--clinic)"><div class="wrap">
-  <div class="shot"><div class="phone"><img loading="lazy" src="assets/screen-earnings.jpg" width="599" height="1300" alt="The earnings screen: pay for a two-week pay period, split by job and by regular and overtime hours."></div></div>
-  <div>
-    <span class="kicker">Pay</span>
-    <h2>Know what you'll earn</h2>
-    <p class="sub">See what each shift pays before the pay stub arrives, so a short payment doesn't slip past you.</p>
-    <ul class="ticks">
-      <li>Daily and weekly overtime, public holidays, and extra pay for nights and weekends</li>
-      <li>Your next payday and what's coming in it, before tax</li>
-      <li>Pay by week, pay period, month or year</li>
-      <li>A raise starts on the right date, without changing what past shifts paid</li>
-    </ul>
+<section class="block"><div class="wrap">
+  <div class="head">
+    <p class="label"><i style="--c: var(--brand2)"></i>Day to day</p>
+    <h2>Handy every day you work</h2>
+    <p>The parts you'll use between one shift and the next.</p>
   </div>
-</div></section>
-
-<section class="block center"><div class="wrap">
-  <span class="kicker">Everyday</span>
-  <h2>Always one glance away</h2>
-  <p class="sub">The small things that make a shift calendar worth opening every day.</p>
-  <div class="grid">
-    <div class="tile"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 1 1 12 0c0 6 2.500 7 2.500 7h-17S6 15 6 9zM10 20a2 2 0 0 0 4 0"/></svg></div>
-      <h3>Reminders</h3><p>A nudge before each shift, with your own sound.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M10 7h4M9 12h6M9 15.500h4"/></svg></div>
+  <div class="bento">
+    <div class="cell wide"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.500 2H4.500L6 16zM10 20.500h4"/></svg></div>
+      <h3>Reminders with your sound</h3><p>A nudge before each shift, at the time you choose and with a sound you'll recognise.</p></div>
+    <div class="cell wide"><div class="ico" style="--c: var(--teal)"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg></div>
+      <h3>Swap shifts with coworkers</h3><p>Release a shift to your team and a coworker can take it. Free, and still no account.</p></div>
+    <div class="cell"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2.500"/><path d="M8.500 10V7.500a3.500 3.500 0 0 1 7 0V10"/></svg></div>
       <h3>Lock Screen widget</h3><p>Your next shift without unlocking your phone.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--brand2)"><svg viewBox="0 0 24 24"><rect x="7" y="6" width="10" height="12" rx="3"/><path d="M9 6l.700-3h4.600l.700 3M9 18l.700 3h4.600l.700-3M12 10v2.500l1.500 1"/></svg></div>
-      <h3>Widgets and Apple Watch <span class="tag">PRO</span></h3><p>Home Screen widgets, the Live Activity, and your schedule on your wrist.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--long)"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M9 7V5.500A1.500 1.500 0 0 1 10.500 4h3A1.500 1.500 0 0 1 15 5.500V7M3 13h18"/></svg></div>
-      <h3>Several jobs <span class="tag">PRO</span></h3><p>Each job gets its own colour, shift types and pay, in one calendar.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--teal)"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div>
-      <h3>Swap shifts with coworkers</h3><p>Release a shift to your team and a coworker can take it. Free, with no account.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--clinic)"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="10" r="2.300"/><path d="M2.500 19c.500-3 2.700-4.500 5.500-4.500s5 1.500 5.500 4.500M15 14.600c.600-.200 1.300-.300 2-.300 2.200 0 3.900 1.200 4.500 3.700"/></svg></div>
-      <h3>Live sharing <span class="tag">PRO</span></h3><p>Your calendar on your family's phones, always current.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--brand)"><svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.500-7.970A5.500 5.500 0 0 1 17.200 9.200 4.400 4.400 0 0 1 17 18z"/></svg></div>
-      <h3>iPhone and iPad in sync</h3><p>Syncs through your own iCloud. Shifts can also appear in Apple's Calendar app.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.800 3 2.800 15 0 18M12 3c-2.800 3-2.800 15 0 18"/></svg></div>
-      <h3>12 languages</h3><p>English, French, Spanish, German, Portuguese, Italian, Dutch, Polish, Japanese, Korean, Chinese and Arabic.</p></div>
-    <div class="tile"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><path d="M4 18L9.500 6 15 18M6 14h7M17 18v-6.500M17 11.500c0-1.500 4-1.500 4 .500V18"/></svg></div>
+    <div class="cell"><div class="ico" style="--c: var(--brand2)"><svg viewBox="0 0 24 24"><rect x="7" y="6" width="10" height="12" rx="3"/><path d="M9.500 6l.5-3h4l.5 3M9.500 18l.5 3h4l.5-3"/></svg></div>
+      <h3>Widgets and Apple Watch <span class="pro">PRO</span></h3><p>Home Screen widgets, the Live Activity, and your schedule on your wrist.</p></div>
+    <div class="cell"><div class="ico" style="--c: var(--long)"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="5" rx="1.500"/><rect x="4" y="14" width="16" height="5" rx="1.500"/></svg></div>
+      <h3>Several jobs <span class="pro">PRO</span></h3><p>Each job has its own colour, shift types and pay, on one calendar.</p></div>
+    <div class="cell"><div class="ico" style="--c: var(--clinic)"><svg viewBox="0 0 24 24"><circle cx="8.500" cy="9" r="3"/><circle cx="16.500" cy="10" r="2.500"/><path d="M3.500 19a5 5 0 0 1 10 0M14.500 19a4 4 0 0 1 6.500-3"/></svg></div>
+      <h3>Live sharing <span class="pro">PRO</span></h3><p>Your calendar on your family's phones, always current.</p></div>
+    <div class="cell"><div class="ico" style="--c: var(--brand)"><svg viewBox="0 0 24 24"><path d="M7.500 18a4.500 4.500 0 0 1-.5-9 5.500 5.500 0 0 1 10.500 1.500A3.800 3.800 0 0 1 17 18H7.500z"/></svg></div>
+      <h3>iPhone and iPad in sync</h3><p>Syncs through your own iCloud. Shifts can also show in Apple's Calendar app.</p></div>
+    <div class="cell"><div class="ico" style="--c: var(--night)"><svg viewBox="0 0 24 24"><path d="M5 18l4.500-12h1L15 18M6.800 14h6.400M17 18v-6.500M17 11.500a2.500 2.500 0 0 1 2.500 2.500V18"/></svg></div>
       <h3>Easy to read</h3><p>Big, clear text and controls that follow your iPhone's text size.</p></div>
+    <div class="cell" style="grid-column: 1 / -1"><div class="ico" style="--c: var(--day)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500"/><path d="M3.500 12h17M12 3.500c2.500 2.300 3.800 5.200 3.800 8.500s-1.300 6.200-3.800 8.500c-2.500-2.300-3.800-5.200-3.800-8.500S9.500 5.800 12 3.500z"/></svg></div>
+      <h3>In 12 languages</h3>
+      <div class="langs"><span>English</span><span>French</span><span>Spanish</span><span>German</span><span>Portuguese</span><span>Italian</span><span>Dutch</span><span>Polish</span><span>Japanese</span><span>Korean</span><span>Chinese</span><span>Arabic</span></div></div>
   </div>
 </div></section>
 
-<section class="private"><div class="wrap">
-  <div class="lock"><svg viewBox="0 0 24 24"><rect x="5" y="10.500" width="14" height="10" rx="2.500"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></svg></div>
-  <div>
-    <h2>Your schedule stays private</h2>
-    <p>No account and no ads. Your shifts and pay stay on your devices and in your private iCloud. If you join a team to swap shifts, your pay is never shared. The <a href="privacy.html">privacy policy</a> has the details.</p>
+<section><div class="wrap">
+  <div class="quiet">
+    <p class="label"><i style="--c: var(--night)"></i>Privacy</p>
+    <h2 style="margin-top: 14px">Your schedule and your pay are nobody else's business.</h2>
+    <div class="trio">
+      <div><h3>No account</h3><p>Open the app and start. There's nothing to sign up for and no password to remember.</p></div>
+      <div><h3>No ads, no tracking</h3><p>No advertising and no analytics. Roster photos are read on your iPhone and never uploaded.</p></div>
+      <div><h3>Kept on your devices</h3><p>Shifts and pay stay on your devices and in your private iCloud. If you join a team to swap shifts, your pay is never shared.</p></div>
+    </div>
+    <p>The details are in the <a href="privacy.html">privacy policy</a>.</p>
   </div>
 </div></section>
 
-<section class="block center" id="pricing"><div class="wrap">
-  <span class="kicker">Pricing</span>
-  <h2>Free to use. Pro when you need more.</h2>
-  <p class="sub">The calendar is free with no time limit. Pro adds the extras below.</p>
+<section class="block" id="pricing"><div class="wrap">
+  <div class="head">
+    <p class="label"><i></i>Pricing</p>
+    <h2>Free for the essentials. Pro for the extras.</h2>
+    <p>The calendar is free with no time limit. Pro is there when you need more.</p>
+  </div>
   <div class="plans">
     <div class="plan">
       <h3>Free</h3>
-      <p class="price">No time limit</p>
-      <ul class="ticks">
+      <p>No time limit</p>
+      <ul class="list">
         <li>The calendar and repeating patterns</li>
         <li>Reminders and the Lock Screen widget</li>
         <li>Pay and overtime tracking for one job</li>
         <li>Teams and shift swaps</li>
         <li>Your first 3 roster scans</li>
       </ul>
-      <a class="button" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get Shiftloop free</a>
+      <a class="btn" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">Get Shiftloop free</a>
     </div>
-    <div class="plan pro">
+    <div class="plan best">
       <h3>Shiftloop Pro</h3>
-      <p class="price">Everything in Free, plus:</p>
-      <ul class="ticks">
+      <p>Everything in Free, plus:</p>
+      <ul class="list">
         <li>Multiple jobs</li>
         <li>Unlimited roster scans</li>
         <li>Home Screen widgets, the Live Activity and Apple Watch</li>
         <li>Live sharing with family</li>
         <li>Pay history: backdate a raise or schedule one ahead</li>
       </ul>
-      <div class="seg" role="group" aria-label="Show prices for">
+      <div class="region" role="group" aria-label="Show prices for">
         <button type="button" data-region="us" aria-pressed="true">US</button>
         <button type="button" data-region="ca" aria-pressed="false">Canada</button>
         <button type="button" data-region="uk" aria-pressed="false">UK</button>
       </div>
-      <div class="prices">
+      <div class="tags">
         <div><b data-plan="yearly">$12.99</b><span>a year</span><em>1 MONTH FREE</em></div>
         <div><b data-plan="monthly">$2.99</b><span>a month</span><em></em></div>
         <div><b data-plan="lifetime">$34.99</b><span>once, for life</span><em></em></div>
       </div>
-      <p class="small" id="price-note">Prices in US dollars. The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.</p>
+      <p class="smallprint" id="price-note">Prices in US dollars. The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.</p>
     </div>
   </div>
 </div></section>
 
-<section class="block center" id="support"><div class="wrap">
-  <span class="kicker">Support</span>
-  <h2>Help and contact</h2>
-  <p class="sub">Quick answers, and a way to reach us.</p>
+<section id="support" style="padding-bottom: 84px"><div class="wrap">
+  <div class="head">
+    <p class="label"><i style="--c: var(--teal)"></i>Help</p>
+    <h2>Questions, answered</h2>
+    <p>The common ones are here. For anything else, write to us.</p>
+  </div>
   <div class="help">
-    <div class="tile">
+    <div class="box">
       <h3>Contact us</h3>
-      <p>Questions, problems or ideas? Email us and we'll get back to you. The app's own Help is in Settings → Help.</p>
-      <a class="button" href="mailto:hello@shiftloopapp.com?subject=Shiftloop">hello@shiftloopapp.com</a>
+      <p>Problems, questions or ideas? Email us and we'll get back to you. The app has its own help too, in Settings → Help.</p>
+      <a class="btn line" href="mailto:hello@shiftloopapp.com?subject=Shiftloop">hello@shiftloopapp.com</a>
     </div>
-    <div class="tile">
+    <div class="box">
       <details>
         <summary>How do I restore Shiftloop Pro on a new phone?</summary>
         <p>Open Settings → Get Shiftloop Pro and tap Restore Purchases. Use the same Apple Account you bought Pro with.</p>
@@ -362,22 +527,23 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
         <summary>How do I delete my data?</summary>
         <p>In Shiftloop, open Settings → Erase all data. The <a href="privacy.html#deleting-your-data">privacy policy</a> explains how to remove the copy in iCloud and any team data.</p>
       </details>
-      <p style="margin-top: 14px"><a href="support.html">All help topics</a></p>
+      <p class="more"><a href="support.html">All help topics</a></p>
     </div>
   </div>
 </div></section>
 
-<section class="closing"><div class="wrap">
-  <h2>Know your next shift, and what it pays.</h2>
-  <p>Free on the App Store for iPhone, iPad and Apple Watch.</p>
-  <a class="cta" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#16182A" d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.600V4a1 1 0 0 1 1-1zM5 19a1 1 0 0 1 1-1h12a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1z"/></svg>
-    <span><small>Free on the</small>App Store</span>
+<section class="last"><div class="inner">
+  <h2>Your next shift, one glance away.</h2>
+  <p>Free on the App Store for iPhone, iPad and Apple Watch. iOS 18 or later.</p>
+  <a class="store" href="https://apps.apple.com/app/apple-store/id6818672597?pt=128922679&amp;ct=website&amp;mt=8">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0l-4.500-4.500M12 15l4.500-4.500M5 19.500h14"/></svg>
+    <span><small>Download free on the</small>App Store</span>
   </a>
 </div></section>
+</main>
 
 <footer><div class="wrap">
-  <span>© 2026 <a href="https://mehtafoundry.com/">Mehta Foundry</a></span>
+  <span class="made">Shiftloop is made by <a href="https://mehtafoundry.com/">Mehta Foundry</a> · © 2026</span>
   <a href="support.html">Support</a>
   <a href="privacy.html">Privacy Policy</a>
   <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">Terms of Use</a>
@@ -387,6 +553,74 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
 
 <script>
 (function () {
+  /* The calendar in the hero: this month, filled from a rotation. Each day is a button that
+     steps through off, day and night, so the totals follow what the visitor taps. */
+  var PATTERNS = {
+    four:   { cycle: "DDNN----", hours: 12 },
+    pitman: { cycle: "DD--DDD--DD---", hours: 12 },
+    dupont: { cycle: "NNNN---DDD-NNN---DDDD-------", hours: 12 },
+    fire:   { cycle: "L--", hours: 24 },
+    week:   { weekdays: true, hours: 8 }
+  };
+  var NAMES = { D: "day shift", N: "night shift", L: "24-hour shift", "": "off" };
+  var LETTER = { D: "D", N: "N", L: "24", "": "" };
+  var RATE = 30;
+  var now = new Date(), year = now.getFullYear(), month = now.getMonth();
+  var count = new Date(year, month + 1, 0).getDate();
+  var lead = new Date(year, month, 1).getDay();
+  var grid = document.getElementById("demo-days");
+  var picks = document.querySelectorAll(".picks button");
+  var hours = 12, cells = [];
+
+  var monthName = now.toLocaleDateString("en", { month: "long", year: "numeric" });
+  document.getElementById("demo-month").textContent = monthName;
+
+  function paint(cell, kind) {
+    cell.dataset.s = kind;
+    cell.dataset.h = kind === "L" ? 24 : kind ? hours : 0;
+    cell.lastChild.textContent = LETTER[kind];
+    cell.setAttribute("aria-label", cell.dataset.d + " " + now.toLocaleDateString("en", { month: "long" }) + ", " + NAMES[kind]);
+  }
+  function totals() {
+    var shifts = 0, total = 0;
+    cells.forEach(function (c) { if (c.dataset.s) { shifts += 1; total += Number(c.dataset.h); } });
+    document.getElementById("t-shifts").textContent = shifts;
+    document.getElementById("t-hours").textContent = total;
+    document.getElementById("t-pay").textContent = "$" + (total * RATE).toLocaleString("en");
+  }
+  function apply(key) {
+    var p = PATTERNS[key];
+    hours = p.hours;
+    cells.forEach(function (cell, i) {
+      var kind;
+      if (p.weekdays) { var dow = (lead + i) % 7; kind = dow > 0 && dow < 6 ? "D" : ""; }
+      else { var ch = p.cycle.charAt(i % p.cycle.length); kind = ch === "-" ? "" : ch; }
+      paint(cell, kind);
+    });
+    picks.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.p === key)); });
+    totals();
+  }
+
+  for (var i = 0; i < lead; i++) grid.appendChild(document.createElement("i"));
+  for (var d = 1; d <= count; d++) {
+    var cell = document.createElement("button");
+    cell.type = "button";
+    cell.dataset.d = d;
+    if (d === now.getDate()) cell.className = "today";
+    cell.appendChild(document.createTextNode(d));
+    cell.appendChild(document.createElement("b"));
+    cell.addEventListener("click", function () {
+      var next = { "": "D", D: "N", N: "", L: "" }[this.dataset.s];
+      paint(this, next);
+      totals();
+    });
+    grid.appendChild(cell);
+    cells.push(cell);
+  }
+  picks.forEach(function (b) { b.addEventListener("click", function () { apply(b.dataset.p); }); });
+  apply("four");
+
+  /* Pro prices for the visitor's country. */
   var prices = {"us": {"yearly": "$12.99", "monthly": "$2.99", "lifetime": "$34.99"}, "ca": {"yearly": "$17.99", "monthly": "$3.99", "lifetime": "$49.99"}, "uk": {"yearly": "£12.99", "monthly": "£2.99", "lifetime": "£34.99"}};
   var notes = {
     us: "Prices in US dollars.",
@@ -394,7 +628,7 @@ footer .legal { flex-basis: 100%; font-size: 12.5px; opacity: .85; }
     uk: "Prices in pounds."
   };
   var rest = " The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.";
-  var buttons = document.querySelectorAll(".seg button");
+  var buttons = document.querySelectorAll(".region button");
   function show(region) {
     buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.region === region)); });
     document.querySelectorAll("[data-plan]").forEach(function (el) { el.textContent = prices[region][el.dataset.plan]; });
