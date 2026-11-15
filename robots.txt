@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shiftloopapp.com/sitemap.xml
