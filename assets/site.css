@@ -301,16 +301,21 @@ section { scroll-margin-top: 76px; }
   border-radius: 14px; background: var(--ink); color: var(--paper); transition: transform .2s ease; }
 .btn:hover { transform: translateY(-2px); }
 .btn.line { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); word-break: break-word; }
-.region { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--soft); margin-bottom: 14px; align-self: flex-start; }
-.region button { font: 600 14px/1 var(--sans); padding: 8px 14px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; }
-.region button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 4px rgba(22, 24, 42, .16); }
-.tags { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.region { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 14px; font-weight: 700; font-size: 15px; }
+.region select { font: 600 15px/1.2 var(--sans); color: var(--ink); background: var(--soft); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; max-width: 100%; cursor: pointer; }
+.tags { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .tags div { background: var(--soft); border-radius: 16px; padding: 14px 12px; }
-.tags b { display: block; font: 800 24px/1.1 var(--round); font-variant-numeric: tabular-nums; }
+.tags b { display: block; font: 800 24px/1.1 var(--round); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
 .tags span { display: block; font-size: 13.5px; color: var(--muted); }
 .tags em { display: inline-block; margin-top: 7px; font: 800 10.5px/1 var(--round); letter-spacing: .05em; font-style: normal;
   color: #fff; background: var(--clinic); padding: 4px 7px; border-radius: 999px; }
 .tags em:empty { display: none; }
+/* Long prices (thousands, wide currency names) get a row each instead of a third of the width. */
+.tags.long { grid-template-columns: minmax(0, 1fr); }
+.tags.long div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.tags.long b { overflow: visible; }
+.tags.long em { margin: 0 0 0 auto; }
 .smallprint { font-size: 13px; color: var(--muted); margin-top: 14px; }
 
 /* Help */

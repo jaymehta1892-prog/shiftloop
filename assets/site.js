@@ -273,25 +273,91 @@
     }
   }
 
-  /* ---------- Pro prices for the visitor's country ---------- */
+  /* ---------- Pro prices for the visitor's country ----------
+     Every App Store country's price is on the page (scripts/site/prices.json). The country is
+     guessed from settings the browser already has, its region and its time zone, so nothing is
+     looked up or sent anywhere. The menu lets anyone change it. */
   var priceData = doc.getElementById("prices-data");
-  if (priceData) {
+  var menu = doc.getElementById("price-country");
+  if (priceData && menu) {
     var prices = JSON.parse(priceData.textContent);
-    var notes = {
-      us: "Prices in US dollars.",
-      ca: "Prices in Canadian dollars, plus applicable taxes.",
-      uk: "Prices in pounds."
+    var names = null;
+    try { names = new Intl.DisplayNames(["en"], { type: "region" }); } catch (error) { names = null; }
+    var nameOf = function (code) {
+      var name = null;
+      try { name = names && names.of(code); } catch (error) { name = null; }
+      return name && name !== code ? name : code;
     };
-    var rest = " The App Store shows the price in your own currency. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.";
-    var regions = doc.querySelectorAll(".region button");
-    var showRegion = function (region) {
-      each(regions, function (b) { b.setAttribute("aria-pressed", String(b.dataset.region === region)); });
-      each(doc.querySelectorAll("[data-plan]"), function (el) { el.textContent = prices[region][el.dataset.plan]; });
-      doc.getElementById("price-note").textContent = notes[region] + rest;
+    /* Time zones of the countries most visitors come from. A device sets its time zone by itself,
+       so it says where someone is more reliably than the language they picked. */
+    var ZONES = {
+      "America/New_York": "US", "America/Chicago": "US", "America/Denver": "US", "America/Los_Angeles": "US", "America/Phoenix": "US",
+      "America/Anchorage": "US", "America/Detroit": "US", "Pacific/Honolulu": "US",
+      "America/Toronto": "CA", "America/Vancouver": "CA", "America/Edmonton": "CA", "America/Winnipeg": "CA", "America/Halifax": "CA",
+      "America/St_Johns": "CA", "America/Regina": "CA", "America/Montreal": "CA", "America/Moncton": "CA",
+      "Europe/London": "GB", "Europe/Dublin": "IE", "Pacific/Auckland": "NZ", "Asia/Kolkata": "IN", "Asia/Calcutta": "IN",
+      "Asia/Tokyo": "JP", "Asia/Seoul": "KR", "Asia/Shanghai": "CN", "Asia/Hong_Kong": "HK", "Asia/Singapore": "SG", "Asia/Manila": "PH",
+      "Asia/Dubai": "AE", "Asia/Riyadh": "SA", "Asia/Qatar": "QA", "Asia/Kuwait": "KW", "Asia/Karachi": "PK", "Asia/Dhaka": "BD",
+      "Asia/Colombo": "LK", "Asia/Jakarta": "ID", "Asia/Bangkok": "TH", "Asia/Kuala_Lumpur": "MY", "Asia/Ho_Chi_Minh": "VN",
+      "Asia/Saigon": "VN", "Asia/Taipei": "TW", "Asia/Jerusalem": "IL", "Europe/Paris": "FR", "Europe/Berlin": "DE", "Europe/Madrid": "ES",
+      "Europe/Rome": "IT", "Europe/Amsterdam": "NL", "Europe/Brussels": "BE", "Europe/Lisbon": "PT", "Europe/Warsaw": "PL",
+      "Europe/Stockholm": "SE", "Europe/Oslo": "NO", "Europe/Copenhagen": "DK", "Europe/Helsinki": "FI", "Europe/Zurich": "CH",
+      "Europe/Vienna": "AT", "Europe/Prague": "CZ", "Europe/Budapest": "HU", "Europe/Bucharest": "RO", "Europe/Athens": "GR",
+      "Europe/Istanbul": "TR", "Europe/Kiev": "UA", "Europe/Kyiv": "UA", "Africa/Johannesburg": "ZA", "Africa/Lagos": "NG",
+      "Africa/Nairobi": "KE", "Africa/Cairo": "EG", "Africa/Accra": "GH", "America/Mexico_City": "MX", "America/Sao_Paulo": "BR",
+      "America/Argentina/Buenos_Aires": "AR", "America/Bogota": "CO", "America/Santiago": "CL", "America/Lima": "PE"
     };
-    each(regions, function (b) { b.addEventListener("click", function () { showRegion(b.dataset.region); }); });
-    var lang = (navigator.language || "").toLowerCase();
-    if (lang.slice(-3) === "-ca") showRegion("ca");
-    else if (lang.slice(-3) === "-gb") showRegion("uk");
+    var guess = function () {
+      var langs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || "en-US"];
+      var fromLanguage = null, zone = "";
+      for (var i = 0; i < langs.length && !fromLanguage; i++) {
+        var parts = String(langs[i]).split("-");
+        var region = parts.length > 1 ? parts[parts.length - 1].toUpperCase() : "";
+        if (region.length === 2 && prices[region]) fromLanguage = region;
+      }
+      try { zone = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (error) { zone = ""; }
+      var fromZone = ZONES[zone] || (zone.indexOf("Australia/") === 0 ? "AU" : null);
+      /* The time zone decides where it is one we know; otherwise the region in the language setting. */
+      if (fromZone && prices[fromZone]) return fromZone;
+      if (fromLanguage) return fromLanguage;
+      try {
+        var likely = new Intl.Locale(langs[0]).maximize().region;
+        if (likely && prices[likely]) return likely;
+      } catch (error) { /* older browsers */ }
+      return "US";
+    };
+    var rest = " Tax may be added at checkout in some countries. Subscriptions renew automatically until cancelled, and you can cancel any time in your Apple Account settings.";
+    var tags = doc.querySelector(".tags");
+    /* Three across when the prices fit; a row each when one of them is too wide for its box. */
+    var fitPrices = function () {
+      if (!tags) return;
+      tags.classList.remove("long");
+      var tight = false;
+      each(tags.querySelectorAll("b"), function (b) { if (b.scrollWidth > b.clientWidth + 1) tight = true; });
+      tags.classList.toggle("long", tight);
+    };
+    var refitPrices = null;
+    window.addEventListener("resize", function () { clearTimeout(refitPrices); refitPrices = setTimeout(fitPrices, 150); });
+    var showCountry = function (code) {
+      var row = prices[code] || prices.US;
+      each(doc.querySelectorAll("[data-plan]"), function (el) {
+        el.textContent = row[{ yearly: 0, monthly: 1, lifetime: 2 }[el.dataset.plan]];
+      });
+      fitPrices();
+      doc.getElementById("price-note").textContent = "Prices as shown on the App Store in " + nameOf(code) + "." + rest;
+    };
+    var list = Object.keys(prices).map(function (code) { return { code: code, name: nameOf(code) }; });
+    list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    menu.textContent = "";
+    list.forEach(function (item) {
+      var option = doc.createElement("option");
+      option.value = item.code;
+      option.textContent = item.name;
+      menu.appendChild(option);
+    });
+    var chosen = guess();
+    menu.value = chosen;
+    showCountry(chosen);
+    menu.addEventListener("change", function () { showCountry(menu.value); });
   }
 })();
