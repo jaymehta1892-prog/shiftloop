@@ -450,3 +450,8 @@ details p { margin: 2px 0 12px; }
 .tablewrap .no { color: var(--muted); }
 .prose .note { font-size: 14px; color: var(--muted); }
 .updated { margin-top: 10px; font-size: 14px; color: var(--muted); }
+@media (max-width: 600px) {
+  .tablewrap table { min-width: 0; font-size: 14px; }
+  .tablewrap th, .tablewrap td { padding: 10px; }
+  .tablewrap tbody th { width: auto; }
+}
