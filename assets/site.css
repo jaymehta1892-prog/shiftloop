@@ -342,7 +342,7 @@ details p { margin: 2px 0 12px; }
 .last .store { background: #fff; color: #16182A; }
 .foot { padding: 40px 0 48px; color: var(--muted); font-size: 14.5px; }
 .foot a { color: var(--muted); }
-.foot .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 28px; }
+.foot .cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 28px; }
 .foot .cols > div > p { margin-top: 12px; max-width: 26em; }
 .foot .t { margin: 0 0 10px; font: 700 13px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
@@ -438,3 +438,15 @@ details p { margin: 2px 0 12px; }
     transition-duration: .01ms !important; transition-delay: 0ms !important; }
   .js [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* Guides: comparison tables, notes, update date */
+.tablewrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+.tablewrap table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 520px; }
+.tablewrap th, .tablewrap td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.tablewrap thead th { font-weight: 800; background: var(--soft); }
+.tablewrap tbody th { font-weight: 600; width: 34%; }
+.tablewrap tr:last-child th, .tablewrap tr:last-child td { border-bottom: 0; }
+.tablewrap .yes { font-weight: 700; color: var(--ok, #1f9d55); }
+.tablewrap .no { color: var(--muted); }
+.prose .note { font-size: 14px; color: var(--muted); }
+.updated { margin-top: 10px; font-size: 14px; color: var(--muted); }
